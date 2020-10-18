@@ -515,15 +515,15 @@ int Main_Menu(unsigned long timeout)
 #ifdef NEWMENU
         BUTTON_EXPAND = 100 * 2,
         BUTTON_START,
-#ifdef BONUS_MISSIONS
-        BUTTON_BONUS,
-#endif // BONUS_MISSIONS
-        BUTTON_INTERNET,
 #else
         BUTTON_START = 100 * 2,
 #endif
+#ifdef BONUS_MISSIONS
+        BUTTON_BONUS,
+#endif // BONUS_MISSIONS
         BUTTON_LOAD,
         BUTTON_MULTI,
+        BUTTON_INTERNET,
         BUTTON_INTRO,
         BUTTON_EXIT,
     };

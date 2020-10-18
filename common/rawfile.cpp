@@ -283,7 +283,7 @@ int RawFileClass::Open(int rights)
     Rights = rights;
 
 #ifndef _WIN32
-    if ( get_real_filename() )
+    if ( !(rights & WRITE) && get_real_filename() )
         return false;
 #endif
 
