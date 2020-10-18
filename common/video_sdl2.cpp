@@ -41,11 +41,7 @@
 #include "palette.h"
 #include "video.h"
 #include <cstdio>
-
-#pragma pack(push,8)
-/* TODO: remove global flags, fix problematic structures instead */
 #include <SDL.h>
-#pragma pack(pop)
 
 static bool video_inited = false;
 static int bit_depth;
