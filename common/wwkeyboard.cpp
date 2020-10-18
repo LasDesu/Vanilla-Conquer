@@ -355,7 +355,30 @@ KeyASCIIType WWKeyboardClass::To_ASCII(unsigned short key)
  *=============================================================================================*/
 bool WWKeyboardClass::Down(unsigned short key)
 {
-#ifdef _WIN32
+#ifdef SDL2_BUILD
+    if ( Is_Mouse_Key(key) )
+    {
+        int x, y;
+        unsigned buts;
+
+        buts = SDL_GetMouseState( NULL, NULL );
+        switch ( key )
+        {
+            case VK_LBUTTON:
+                return buts & SDL_BUTTON(SDL_BUTTON_LEFT) ? true : false;
+            case VK_RBUTTON:
+                return buts & SDL_BUTTON(SDL_BUTTON_RIGHT) ? true : false;
+            case VK_MBUTTON:
+                return buts & SDL_BUTTON(SDL_BUTTON_MIDDLE) ? true : false;
+        }
+    }
+    else
+    {
+        /* TODO */
+    }
+    
+    return false;
+#elif defined(_WIN32)
     return (GetAsyncKeyState(key & 0xFF) == 0 ? false : true);
 #else
     return false;

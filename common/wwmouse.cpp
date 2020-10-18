@@ -650,8 +650,8 @@ int WWMouseClass::Get_Mouse_State(void)
 int WWMouseClass::Get_Mouse_X(void)
 {
 #ifdef SDL2_BUILD
-    int x, y;
-    SDL_GetMouseState( &x, &y );
+    int x;
+    SDL_GetMouseState( &x, NULL );
     return x;
 #elif defined(_WIN32)
     POINT pt;
@@ -675,8 +675,8 @@ int WWMouseClass::Get_Mouse_X(void)
 int WWMouseClass::Get_Mouse_Y(void)
 {
 #ifdef SDL2_BUILD
-    int x, y;
-    SDL_GetMouseState( &x, &y );
+    int y;
+    SDL_GetMouseState( NULL, &y );
     return y;
 #elif defined(_WIN32)
     POINT pt;
