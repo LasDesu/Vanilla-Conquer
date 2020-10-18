@@ -964,14 +964,14 @@ bool Read_Object(void* ptr, int class_size, FileClass& file, bool has_vtable)
         return false;
     }
 
-    int vtable_adjust = has_vtable ? 4 : 0;
+    int vtable_adjust = has_vtable ? sizeof(void *) : 0;
     unsigned char* object_ptr = static_cast<unsigned char*>(ptr);
 
     if (has_vtable) {
         /*
         ** Need to skip the vtable read.
         */
-        int dummy;
+        uintptr_t dummy;
         file.Read(&dummy, vtable_adjust);
     }
 
@@ -1136,7 +1136,7 @@ bool Read_Object(void* ptr, int base_size, int class_size, FileClass& file, void
     **	Fill in VTable.
     */
     if (vtable) {
-        ((void**)(((char*)ptr) + base_size - 4))[0] = vtable;
+        ((void**)(((char*)ptr) + base_size - sizeof(void *)))[0] = vtable;
     }
 
     return (true);
@@ -1361,7 +1361,7 @@ TechnoTypeClass const* Target_To_TechnoType(TARGET target)
  *=========================================================================*/
 void* Get_VTable(void* ptr, int base_size)
 {
-    return (((void**)(((char*)ptr) + base_size - 4))[0]);
+    return (((void**)(((char*)ptr) + base_size - sizeof(void *)))[0]);
 }
 
 /***************************************************************************
@@ -1383,7 +1383,7 @@ void* Get_VTable(void* ptr, int base_size)
  *=========================================================================*/
 void Set_VTable(void* ptr, int base_size, void* vtable)
 {
-    ((void**)(((char*)ptr) + base_size - 4))[0] = vtable;
+    ((void**)(((char*)ptr) + base_size - sizeof(void *)))[0] = vtable;
 }
 
 #if 0

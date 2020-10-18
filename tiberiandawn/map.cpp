@@ -1582,7 +1582,7 @@ void MapClass::Clean(void)
     const char* type_text = NULL;
     const char* ini_name = NULL;
     AbstractClass abstract_object;
-    unsigned long abstract_vtable = *(unsigned long*)&abstract_object;
+    uintptr_t abstract_vtable = *(uintptr_t*)&abstract_object;
 
     /*------------------------------------------------------------------------
     Check every cell on the map, even those that aren't displayed.
@@ -1616,7 +1616,7 @@ void MapClass::Clean(void)
                     /*
                     ** This object is likely deleted.
                     */
-                    if (abstract_vtable == *(unsigned long*)obj) {
+                    if (abstract_vtable == *(uintptr_t*)obj) {
                         type_text = "Abstract";
                         ini_name = "UNKNOWN";
                     } else {
