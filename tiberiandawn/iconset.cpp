@@ -133,7 +133,7 @@ void* Load_Icon_Set(char const* filename, void* iconsetptr, long buffsize)
     */
     fh = Open_Iff_File(filename);
     if (fh != WW_ERROR) {
-        Read_File(fh, &id, sizeof(long));
+        Read_File(fh, &id, sizeof(int32_t));
         if (id == FORM_ICON) {
 
             /*

@@ -135,4 +135,10 @@ void* Set_Mouse_Cursor(int hotx, int hoty, void* cursor);
 int Get_Mouse_X(void);
 int Get_Mouse_Y(void);
 
+#ifdef SDL2_BUILD
+void Process_Mouse(void *event);
+#elif defined(_WIN32)
+void CALLBACK Process_Mouse(UINT event_id, UINT res1, DWORD user, DWORD res2, DWORD res3);
+#endif
+
 #endif

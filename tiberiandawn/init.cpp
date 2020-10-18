@@ -778,9 +778,9 @@ bool Select_Game(bool fade)
 #ifdef BONUS_MISSIONS
         SEL_BONUS_MISSIONS,
 #endif // BONUS_MISSIONS
-        SEL_INTERNET,
         SEL_LOAD_MISSION,     // load a saved game
         SEL_MULTIPLAYER_GAME, // play modem/null-modem/network game
+        SEL_INTERNET,
         SEL_INTRO,            // replay the intro
         SEL_EXIT,             // exit to DOS
         SEL_FAME,             // view the hall of fame

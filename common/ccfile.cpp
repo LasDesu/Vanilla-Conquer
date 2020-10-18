@@ -175,9 +175,9 @@ long CCFileClass::Read(void* buffer, long size)
     **	If the file isn't currently open, then open it.
     */
     if (!Is_Open()) {
-        if (Open()) {
-            opened = true;
-        }
+        if (!Open())
+            return (0);
+        opened = true;
     }
 
     /*

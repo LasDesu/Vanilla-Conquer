@@ -634,10 +634,10 @@ int Main_Menu(unsigned long timeout)
                              D_MULTI_H);
     starty += ystep;
 
-    // TextButtonClass internetbutton(BUTTON_INTERNET, TXT_INTERNET,
-    //	TPF_CENTER | TPF_6PT_GRAD | TPF_USE_GRAD_PAL | TPF_NOSHADOW,
-    //	D_INTERNET_X, starty, D_INTERNET_W, D_INTERNET_H);
-    // starty += ystep;
+    TextButtonClass internetbutton(BUTTON_INTERNET, TXT_INTERNET,
+    	TPF_CENTER | TPF_6PT_GRAD | TPF_USE_GRAD_PAL | TPF_NOSHADOW,
+    	D_INTERNET_X, starty, D_INTERNET_W, D_INTERNET_H);
+    starty += ystep;
 #else
     TextButtonClass multibtn(BUTTON_MULTI,
                              TXT_MULTIPLAYER_GAME,
@@ -757,6 +757,7 @@ int Main_Menu(unsigned long timeout)
 #endif // BONUS_MISSIONS
     buttons[butt++] = &loadbtn;
     buttons[butt++] = &multibtn;
+    buttons[butt++] = &internetbutton;
     buttons[butt++] = &introbtn;
     buttons[butt++] = &exitbtn;
 #else

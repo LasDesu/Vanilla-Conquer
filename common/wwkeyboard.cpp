@@ -53,6 +53,10 @@
 
 #include "wwkeyboard.h"
 #include <string.h>
+#ifdef SDL2_BUILD
+#include <SDL.h>
+#include "wwmouse.h"
+#endif
 
 #define ARRAY_SIZE(x) int(sizeof(x) / sizeof(x[0]))
 
@@ -250,8 +254,8 @@ bool WWKeyboardClass::Put_Key_Message(unsigned short vk_key, bool release)
  *=============================================================================================*/
 bool WWKeyboardClass::Put_Mouse_Message(unsigned short vk_key, int x, int y, bool release)
 {
-    if (Available_Buffer_Room() >= 3 && Is_Mouse_Key(vk_key)) {
-        Put_Key_Message(vk_key, release);
+    if (Available_Buffer_Room() >= 3) {
+        Put(vk_key | (release ? WWKEY_RLS_BIT : 0));
         Put((unsigned short)x);
         Put((unsigned short)y);
         return (true);
@@ -304,7 +308,9 @@ KeyASCIIType WWKeyboardClass::To_ASCII(unsigned short key)
     int result = 1;
     int scancode = 0;
 
-#ifdef _WIN32
+#ifdef SDL2_BUILD
+    buffer[0] = SDL_GetKeyFromScancode( key );
+#elif defined(_WIN32)
     scancode = MapVirtualKeyA(key & 0xFF, 0);
     result = ToAscii((UINT)(key & 0xFF), (UINT)scancode, (PBYTE)KeyState, (LPWORD)buffer, (UINT)0);
 #endif
@@ -498,7 +504,46 @@ bool WWKeyboardClass::Is_Buffer_Empty(void) const
  *=============================================================================================*/
 void WWKeyboardClass::Fill_Buffer_From_System(void)
 {
-#ifdef _WIN32
+#ifdef SDL2_BUILD
+    SDL_Event event;
+    
+    while ( SDL_PollEvent(&event) )
+    {
+        unsigned short key;
+        switch ( event.type )
+        {
+            case SDL_KEYDOWN:
+                if ( event.key.keysym.scancode < 256 )
+                    Put( event.key.keysym.scancode );
+                break;
+            case SDL_KEYUP:
+                if ( event.key.keysym.scancode < 256 )
+                    Put( event.key.keysym.scancode | WWKEY_RLS_BIT );
+                break;
+            case SDL_MOUSEBUTTONDOWN:
+            case SDL_MOUSEBUTTONUP:
+                switch ( event.button.button )
+                {
+                    case SDL_BUTTON_LEFT:
+                    default:
+                        key = VK_LBUTTON;
+                        break;
+                    case SDL_BUTTON_RIGHT:
+                        key = VK_RBUTTON;
+                        break;
+                    case SDL_BUTTON_MIDDLE:
+                        key = VK_MBUTTON;
+                        break;
+                }
+                Put_Mouse_Message( key, event.button.x, event.button.y, 
+                    event.type == SDL_MOUSEBUTTONDOWN ? false : true );
+                break;
+            case SDL_MOUSEMOTION:
+                Process_Mouse( &event );
+                break;
+        }
+    }
+#elif defined(_WIN32)
     if (!Is_Buffer_Full()) {
         MSG msg;
         while (PeekMessageA(&msg, NULL, 0, 0, PM_NOREMOVE)) {

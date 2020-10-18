@@ -543,7 +543,7 @@ int BufferIOFileClass::Open(int rights)
         FilePos = 0;
         IsOpen = true;
     } else {
-        RawFileClass::Open(rights);
+        return (RawFileClass::Open(rights));
     }
 
     return (true);
@@ -711,10 +711,10 @@ long BufferIOFileClass::Read(void* buffer, long size)
     int opened = false;
 
     if (!Is_Open()) {
-        if (Open()) {
-            TrueFileStart = RawFileClass::Seek(0);
-            opened = true;
-        }
+        if (!Open())
+            return (0);
+        TrueFileStart = RawFileClass::Seek(0);
+        opened = true;
     }
 
     if (UseBuffer) {

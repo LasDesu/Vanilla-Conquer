@@ -59,6 +59,69 @@
 #ifndef _WIN32
 #include <unistd.h>
 #define _unlink unlink
+
+#include <sys/stat.h>
+#include <ctype.h>
+
+static char *str_tolower( char *str )
+{
+    char *p = str;
+    while ( *p != '\0' )
+    {
+        *p = tolower( *p );
+        p ++;
+    }
+
+    return str;
+}
+
+static char *str_toupper( char *str )
+{
+    char *p = str;
+    while ( *p != '\0' )
+    {
+        *p = toupper( *p );
+        p ++;
+    }
+
+    return str;
+}
+
+int RawFileClass::get_real_filename()
+{
+    struct stat statbuf;
+    char *fname;
+    int ret;
+
+    ret = stat( Filename, &statbuf );
+    if ( ret == 0 )
+        return 0;
+    
+    if ( Allocated )
+        fname = Filename;
+    else
+        fname = strdup( Filename );
+
+    /* try upper case */
+    str_toupper( fname );
+
+    ret = stat( fname, &statbuf );
+    if ( ret == 0 )
+        goto found;
+    /* try lower case */
+    str_tolower( fname );
+
+    ret = stat( fname, &statbuf );
+    if ( ret == 0 )
+        goto found;
+//fprintf(stderr,"%s %u: %s not found\n",__FUNCTION__,__LINE__,fname);
+    return -1;
+
+found://fprintf(stderr,"%s %u: found as %s\n",__FUNCTION__,__LINE__,fname);
+    Filename = fname;
+    Allocated = true;
+    return 0;
+}
 #endif
 
 /***********************************************************************************************
@@ -219,6 +282,11 @@ int RawFileClass::Open(int rights)
     */
     Rights = rights;
 
+#ifndef _WIN32
+    if ( get_real_filename() )
+        return false;
+#endif
+
     /*
     **	Repetitively try to open the file. Abort if a fatal error condition occurs.
     */
@@ -309,6 +377,11 @@ int RawFileClass::Is_Available(int forced)
         RawFileClass::Close();
         return (true);
     }
+    
+#ifndef _WIN32
+    if ( get_real_filename() )
+        return false;
+#endif
 
     /*
     **	Perform a raw open of the file. If this open fails for ANY REASON, including a missing
