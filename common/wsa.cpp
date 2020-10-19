@@ -113,7 +113,7 @@ typedef struct
 // NOTE:"THIS IS A BAD THING. SINCE sizeof(SysAnimHeaderType) CHANGED, THE ANIMATE.EXE
 // UTILITY DID NOT KNOW I UPDATED IT, IT ADDS IT TO largest_frame_size BEFORE SAVING
 // IT TO THE FILE.  THIS MEANS I HAVE TO ADD THESE charS ON NOW FOR IT TO WORK.
-#define SCRUCT_SIZE_ANIMATE_KNOWS_ABOUT (2*7 + 4*2 + 13 + 4)
+#define SCRUCT_SIZE_ANIMATE_KNOWS_ABOUT (/*shorts*/2*7 + /*pointers*/4*2 + /*buf*/13 + /*short*/2 )
 #define EXTRA_charS_ANIMATE_NOT_KNOW_ABOUT (sizeof(SysAnimHeaderType) - SCRUCT_SIZE_ANIMATE_KNOWS_ABOUT)
 
 //
@@ -506,7 +506,7 @@ bool Animate_Frame(void* handle,
         direct_to_dest = true;
     }
     //
-    // If current_frame is equal to tatal_frames, then no animations have taken place
+    // If current_frame is equal to total_frames, then no animations have taken place
     // so must uncompress frame 0 in delta buffer to the frame_buffer/page if it
     // exists.
     //
