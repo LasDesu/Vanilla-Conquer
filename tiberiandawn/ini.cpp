@@ -274,13 +274,15 @@ bool Read_Scenario_Ini(char* root, bool fresh)
     sprintf(fname, "%s.INI", root);
     CCFileClass file(fname);
     if (!file.Is_Available()) {
-        GlyphX_Debug_Print("Failed to find scenario file");
+        GlyphX_Debug_Print("Failed to find scenario file ");
         GlyphX_Debug_Print(fname);
+        GlyphX_Debug_Print("\n");
         return (false);
     } else {
 
-        GlyphX_Debug_Print("Opened scenario file");
+        GlyphX_Debug_Print("Opened scenario file ");
         GlyphX_Debug_Print(fname);
+        GlyphX_Debug_Print("\n");
 
         file.Read(buffer, _ShapeBufferSize - 1);
     }
@@ -727,13 +729,15 @@ bool Read_Scenario_Ini_File(char* scenario_file_name, char* bin_file_name, const
 
     CCFileClass file(scenario_file_name);
     if (!file.Is_Available()) {
-        GlyphX_Debug_Print("Failed to find scenario file");
+        GlyphX_Debug_Print("Failed to find scenario file ");
         GlyphX_Debug_Print(scenario_file_name);
+        GlyphX_Debug_Print("\n");
         return (false);
     } else {
 
-        GlyphX_Debug_Print("Opened scenario file");
+        GlyphX_Debug_Print("Opened scenario file ");
         GlyphX_Debug_Print(scenario_file_name);
+        GlyphX_Debug_Print("\n");
 
         file.Read(buffer, _ShapeBufferSize - 1);
     }
@@ -1160,13 +1164,15 @@ bool Read_Movies_From_Scenario_Ini(char* root, bool fresh)
     sprintf(fname, "%s.INI", root);
     CCFileClass file(fname);
     if (!file.Is_Available()) {
-        GlyphX_Debug_Print("Failed to find scenario file");
+        GlyphX_Debug_Print("Failed to find scenario file ");
         GlyphX_Debug_Print(fname);
+        GlyphX_Debug_Print("\n");
         return (false);
     } else {
 
-        GlyphX_Debug_Print("Opened scenario file");
+        GlyphX_Debug_Print("Opened scenario file ");
         GlyphX_Debug_Print(fname);
+        GlyphX_Debug_Print("\n");
 
         file.Read(buffer, _ShapeBufferSize - 1);
     }

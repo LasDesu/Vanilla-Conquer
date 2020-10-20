@@ -1145,7 +1145,7 @@ static Single_Line_Function NewShapeJumpTable[32] = {Single_Line_Copy,
 typedef struct tShapeHeaderType
 {
     unsigned draw_flags;
-    char* shape_data;
+    uintptr_t shape_data;
     int shape_buffer; // 1 if shape is in theater buffer
 } ShapeHeaderType;
 

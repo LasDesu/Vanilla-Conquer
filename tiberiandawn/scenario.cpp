@@ -235,10 +235,10 @@ bool Read_Scenario(char* root)
 #if (1)
         char message[200];
         if (root) {
-            sprintf(message, "Failed to load scenario %s", root);
+            sprintf(message, "Failed to load scenario %s\n", root);
             GlyphX_Debug_Print(message);
         } else {
-            GlyphX_Debug_Print("Failed to load scenario");
+            GlyphX_Debug_Print("Failed to load scenario\n");
         }
 #else
         Fade_Palette_To(GamePalette, FADE_PALETTE_FAST, Call_Back);
